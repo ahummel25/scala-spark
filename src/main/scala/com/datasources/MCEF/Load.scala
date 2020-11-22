@@ -36,7 +36,7 @@ object Load {
 
     val dfSchema: StructType = getMCEFSchemaStruct
 
-    val fileRDD: RDD[String] = sc.textFile(s"${sys.env("HOME")}/Documents/dummyhcef.txt", 6)
+    val fileRDD: RDD[String] = sc.textFile("dummyhcef.txt", 6)
 
     val rowsRDD: RDD[Row] = fileRDD.map(line =>
       Row(line.substring(0, 2),
