@@ -1,0 +1,2 @@
+Main-Class: com.datasources.MCEF.Load
+Class-Path: mcef-to-teradata.jar
