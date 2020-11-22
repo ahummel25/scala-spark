@@ -11,9 +11,13 @@ object Load {
   /** Builds an RDD from MCEF file.
    *
    */
-  def buildDataFrame(): Unit = {
+  def buildDataFrame(args: Array[String]): Unit = {
     val master = "local"
     val appName = "MCEF"
+
+    if (args.length > 0) {
+      println(s"First arg passed: ${args(0)}")
+    }
 
     val conf: SparkConf = new SparkConf()
       .setMaster(master)
@@ -27,14 +31,9 @@ object Load {
       .getOrCreate()
 
     val sqlContext: SQLContext = ss.sqlContext
-
     val sc: SparkContext = ss.sparkContext
-
-    setLogLevel(sc, LogLevel.WARN)
-
     val dfSchema: StructType = getMCEFSchemaStruct
-
-    val fileRDD: RDD[String] = sc.textFile("dummyhcef.txt", 6)
+    val fileRDD: RDD[String] = sc.textFile("src/main/resources/data/dummyhcef.txt", 6)
 
     val rowsRDD: RDD[Row] = fileRDD.map(line =>
       Row(line.substring(0, 2),
@@ -56,6 +55,6 @@ object Load {
   }
 
   def main(args: Array[String]): Unit = {
-    buildDataFrame()
+    buildDataFrame(args)
   }
 }
