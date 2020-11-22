@@ -1,7 +1,5 @@
 name := "HDFS-Load"
-
 version := "0.1"
-
 scalaVersion := "2.12.8"
 
 val sparkVersion = "3.0.1"

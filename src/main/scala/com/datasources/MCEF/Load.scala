@@ -14,13 +14,11 @@ object Load {
   def buildDataFrame(): Unit = {
     val master = "local"
     val appName = "MCEF"
-    val warehouseLocation = "file:${system:user.dir}/spark-warehouse"
 
     val conf: SparkConf = new SparkConf()
       .setMaster(master)
       .setAppName(appName)
       .set("spark.ui.enabled", "true")
-      .set("spark.sql.warehouse.dir", warehouseLocation)
 
     val ss: SparkSession = SparkSession
       .builder()
@@ -40,9 +38,9 @@ object Load {
 
     val rowsRDD: RDD[Row] = fileRDD.map(line =>
       Row(line.substring(0, 2),
-          line.substring(2, 17),
-          line.substring(17, 20),
-          line.substring(20, 21)
+        line.substring(2, 17),
+        line.substring(17, 20),
+        line.substring(20, 21)
       )
     )
 
@@ -53,12 +51,8 @@ object Load {
     df.createOrReplaceTempView(tempTableName)
 
     println(s"Selecting from ${tempTableName}")
-    val mcefTableDF = ss.sql("SELECT * FROM " + tempTableName)
-    mcefTableDF.show()
 
-//    df.printSchema()
-//
-//    df.show()
+    ss.sql("SELECT * FROM " + tempTableName).show()
   }
 
   def main(args: Array[String]): Unit = {
