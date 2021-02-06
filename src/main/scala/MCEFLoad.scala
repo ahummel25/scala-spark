@@ -1,16 +1,13 @@
-package com.datasources.MCEF
-
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.types.StructType
 import org.apache.spark.sql.{DataFrame, Row, SQLContext, SparkSession}
 import org.apache.spark.{SparkConf, SparkContext}
-import com.utils.StructUtils.getMCEFSchemaStruct
-import com.utils.Utils.{LogLevel, setLogLevel}
+import utils.Struct.getMCEFSchemaStruct
 
-object Load {
+object MCEFLoad {
+
   /** Builds an RDD from MCEF file.
-   *
-   */
+    */
   def buildDataFrame(args: Array[String]): Unit = {
     val master = "local"
     val appName = "MCEF"
@@ -30,13 +27,22 @@ object Load {
       .enableHiveSupport()
       .getOrCreate()
 
+    val list = List(1, 2, 3, 4)
+    val list1 = List("A", "B", "C", "D")
+    //apply operation to create a zip of list
+    val list2 = list zip list1
+    //print list
+    println(list2)
+
     val sqlContext: SQLContext = ss.sqlContext
     val sc: SparkContext = ss.sparkContext
     val dfSchema: StructType = getMCEFSchemaStruct
-    val fileRDD: RDD[String] = sc.textFile("src/main/resources/data/dummyhcef.txt", 6)
+    val fileRDD: RDD[String] =
+      sc.textFile("src/main/resources/data/dummyhcef.txt", 6)
 
     val rowsRDD: RDD[Row] = fileRDD.map(line =>
-      Row(line.substring(0, 2),
+      Row(
+        line.substring(0, 2),
         line.substring(2, 17),
         line.substring(17, 20),
         line.substring(20, 21)
@@ -49,7 +55,7 @@ object Load {
 
     df.createOrReplaceTempView(tempTableName)
 
-    println(s"Selecting from ${tempTableName}")
+    println(s"Selecting from $tempTableName")
 
     ss.sql("SELECT * FROM " + tempTableName).show()
   }

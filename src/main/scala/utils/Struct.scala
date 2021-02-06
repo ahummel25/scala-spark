@@ -1,10 +1,10 @@
-package com.utils
+package utils
 
 import org.apache.spark.sql.types.{StringType, StructField, StructType}
 
-object StructUtils {
+object Struct {
   def getMCEFSchemaStruct: StructType = {
-     StructType(
+    StructType(
       Seq(
         StructField("RECORDID", StringType, nullable = false),
         StructField("RXCLAIMNBR", StringType, nullable = false),

@@ -1,6 +1,6 @@
 name := "HDFS-Load"
 version := "0.1"
-scalaVersion := "2.12.8"
+scalaVersion := "2.12.13"
 
 val sparkVersion = "3.0.1"
 
@@ -13,4 +13,7 @@ libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-hive" % sparkVersion
 )
 
-fork in run := true
+fork := true
+
+addCommandAlias("MCEF", "runMain MCEFLoad")
+addCommandAlias("MAC", "runMain MACListLoad")
